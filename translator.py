@@ -26,12 +26,12 @@ def translate():
         translator = Translator(service_urls=['translate.google.com'])
         # the translator
         translated_word = translator.translate(word, dest=swapped_data[menu_var.get()])
-        translated_label = ttk.Label(master,
-                                     text='Translated in ' + menu_var.get() + ':' + str(translated_word.text) + '\n'
-                                          + 'Pronunciation: ' + str(translated_word.pronunciation), font=("Courier",
-                                                                                                          10))
-        translated_label.grid(row=1, column=3)
 
+        textvar.set(str('Translated in ' + menu_var.get() + ':' + str(translated_word.text) + '\n'
+                    + 'Pronunciation: ' + str(translated_word.pronunciation)))
+
+        translated_label = ttk.Label(master, textvariable=textvar, font=("Courier", 10))
+        translated_label.grid(row=1, column=3)
     else:
         messagebox.showwarning(title='Error', message='No word entered')
 
@@ -42,6 +42,7 @@ if __name__ == '__main__':
     master.title("Translator")
     # the icon
     master.iconbitmap('transicon.ico')
+
 
     # internet permission
     try:
@@ -72,6 +73,9 @@ if __name__ == '__main__':
     menu = ttk.Combobox(master, values=list(swapped_data.keys()), textvariable=menu_var)
     menu.current(0)
     menu.grid(row=1, column=1)
+
+    # variable for translated label
+    textvar = StringVar(master)
     # buttons
     btn_translate = ttk.Button(master, text='Translate', command=translate).grid(row=1, column=2)
     btn_detect = ttk.Button(master, text='Detect Language', command=detect_lang).grid(row=0, column=2)
